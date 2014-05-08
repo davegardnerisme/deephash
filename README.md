@@ -29,6 +29,12 @@ Struct	e0979b89bf545866
 Pointer	e0979b89bf545866
 ```
 
+You can run this via:
+
+```
+go run example/example.go
+```
+
 ## Key features
 
  - uses fnv 64a hashing algorithm which is fast with good distribution
