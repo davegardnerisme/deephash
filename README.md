@@ -1,5 +1,7 @@
 # Deep hash
 
+[![Build Status](https://travis-ci.org/davegardnerisme/deephash.svg?branch=master)](https://travis-ci.org/davegardnerisme/deephash)
+
 A library for calculating a deterministic hash for simple or nested data structures
 in Go.
 
