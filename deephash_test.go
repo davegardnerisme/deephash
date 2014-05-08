@@ -188,3 +188,24 @@ func TestSameCases(t *testing.T) {
 		}
 	}
 }
+
+type circular struct {
+	V *circular
+}
+
+func TestCircular(t *testing.T) {
+	a := &circular{}
+	b := &circular{V: a}
+
+	h := Hash(b)
+	if h == nil || len(h) == 0 {
+		t.Error("Hash circular should yield some hash value")
+	}
+
+	// now actually circular it up
+	a.V = b
+	h = Hash(b)
+	if h == nil || len(h) == 0 {
+		t.Error("Hash circular should yield some hash value")
+	}
+}

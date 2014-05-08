@@ -8,10 +8,8 @@ import (
 	"sort"
 )
 
-// During deepMerge, must keep track of checks that are
-// in progress.  The comparison algorithm assumes that all
-// checks in progress are true when it reencounters them.
-// Visited are stored in a map indexed by 17 * a1 + a2;
+// During deepHash, must keep track of visited, to avoid circular traversal.
+// The algorithm is based on: https://github.com/imdario/mergo
 type visit struct {
 	ptr  uintptr
 	typ  reflect.Type
