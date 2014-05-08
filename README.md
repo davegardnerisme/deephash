@@ -28,3 +28,14 @@ String	dcb27518fed9d577
 Struct	e0979b89bf545866
 Pointer	e0979b89bf545866
 ```
+
+## Key features
+
+ - uses fnv 64a hashing algorithm which is fast with good distribution
+ - deterministic hashing for maps (which don't have any order) by sorting on
+   the hash of the keys
+
+## Docs
+
+http://godoc.org/github.com/davegardnerisme/deephash
+
