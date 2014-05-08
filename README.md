@@ -32,6 +32,9 @@ Struct	e0979b89bf545866
 Pointer	e0979b89bf545866
 ```
 
+It's worth noting that here two structs with the same content (eg: a copy),
+where one is a pointer and one isn't, **both hash to the same value**.
+
 You can run this via:
 
 ```
