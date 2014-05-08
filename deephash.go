@@ -67,6 +67,10 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 			hash.Write([]byte(kh))
 			hash.Write(deepHash(indexedByHash[kh], visited, depth+1))
 		}
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < src.Len(); i++ {
+			hash.Write(deepHash(src.Index(i), visited, depth+1))
+		}
 	case reflect.String:
 		hash.Write([]byte(src.String()))
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:

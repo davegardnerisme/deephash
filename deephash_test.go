@@ -65,6 +65,46 @@ var differentTestCases = []interface{}{
 		"foo": testStruct{S: "BAZZER"},
 		"bar": testStruct{S: "BAZZER"},
 	},
+
+	// other maps
+	map[testStruct]testStruct{
+		testStruct{S: "baz"}: testStruct{S: "baz"},
+		testStruct{S: "bar"}: testStruct{S: "bar"},
+	},
+
+	// slices -- ordered here
+	[]testStruct{
+		testStruct{S: "foo"},
+		testStruct{S: "bar"},
+		testStruct{S: "baz"},
+	},
+	[]testStruct{
+		testStruct{S: "bar"},
+		testStruct{S: "foo"},
+		testStruct{S: "baz"},
+	},
+	[]testStruct{
+		testStruct{S: "bar"},
+		testStruct{S: "baz"},
+		testStruct{S: "foo"},
+	},
+
+	// arrays -- we're looking at the contents, so we have to be differnet to the slices
+	[3]testStruct{
+		testStruct{S: "FOO"},
+		testStruct{S: "BAR"},
+		testStruct{S: "BAZ"},
+	},
+	[3]testStruct{
+		testStruct{S: "BAR"},
+		testStruct{S: "FOO"},
+		testStruct{S: "BAZ"},
+	},
+	[3]testStruct{
+		testStruct{S: "BAR"},
+		testStruct{S: "BAZ"},
+		testStruct{S: "FOO"},
+	},
 }
 
 var sameCases = [][]interface{}{
@@ -85,11 +125,31 @@ var sameCases = [][]interface{}{
 			"foo": testStruct{S: "baz"},
 		},
 	},
+
 	// we care about the contents, so we want different values of a struct with same contents to be same
 	[]interface{}{
 		&testStruct{F32: 43.0, F64: 43.0},
 		&testStruct{F32: 43.0, F64: 43.0},
 		testStruct{F32: 43.0, F64: 43.0},
+	},
+
+	// slices and arrays should match
+	[]interface{}{
+		[3]testStruct{
+			testStruct{S: "FOO"},
+			testStruct{S: "BAR"},
+			testStruct{S: "BAZ"},
+		},
+		[]testStruct{
+			testStruct{S: "FOO"},
+			testStruct{S: "BAR"},
+			testStruct{S: "BAZ"},
+		},
+		[]testStruct{
+			testStruct{S: "FOO"},
+			testStruct{S: "BAR"},
+			testStruct{S: "BAZ"},
+		},
 	},
 }
 
