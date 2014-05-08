@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/davegardnerisme/deephash.svg?branch=master)](https://travis-ci.org/davegardnerisme/deephash)
 
 A library for calculating a deterministic hash for simple or nested data structures
-in Go.
+in Go. The traversal algorithm is based on [mergo](https://github.com/imdario/mergo),
+which is in turn based on `reflect/deepequal.go` from the stdlib.
 
 Example:
 
