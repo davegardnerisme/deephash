@@ -2,3 +2,29 @@
 
 A library for calculating a deterministic hash for simple or nested data structures
 in Go.
+
+Example:
+
+```
+eg1 := "foo"
+eg2 := example{
+	Foo: "foo",
+	Bar: 43.0,
+}
+eg3 := &example{
+	Foo: "foo",
+	Bar: 43.0,
+}
+
+fmt.Printf("String\t%x\n", deephash.Hash(eg1))
+fmt.Printf("Struct\t%x\n", deephash.Hash(eg2))
+fmt.Printf("Pointer\t%x\n", deephash.Hash(eg3))
+```
+
+Output:
+
+```
+String	dcb27518fed9d577
+Struct	e0979b89bf545866
+Pointer	e0979b89bf545866
+```

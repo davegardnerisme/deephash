@@ -39,6 +39,11 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 
 	hash := fnv.New64a()
 
+	// deal with pointers/interfaces
+	if src.Kind() == reflect.Ptr || src.Kind() == reflect.Interface {
+		src = src.Elem()
+	}
+
 	switch src.Kind() {
 	case reflect.Struct:
 		for i, n := 0, src.NumField(); i < n; i++ {
@@ -62,10 +67,6 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 			hash.Write([]byte(kh))
 			hash.Write(deepHash(indexedByHash[kh], visited, depth+1))
 		}
-	case reflect.Ptr, reflect.Interface:
-		if b := deepHash(src.Elem(), visited, depth+1); b != nil {
-			hash.Write(b)
-		}
 	case reflect.String:
 		hash.Write([]byte(src.String()))
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
@@ -75,6 +76,7 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 	case reflect.Float32, reflect.Float64:
 		binary.Write(hash, binary.BigEndian, src.Float())
 	}
+
 	return hash.Sum(nil)
 }
 
