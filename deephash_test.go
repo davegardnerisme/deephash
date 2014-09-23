@@ -1,6 +1,7 @@
 package deephash
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 )
@@ -207,5 +208,32 @@ func TestCircular(t *testing.T) {
 	h = Hash(b)
 	if h == nil || len(h) == 0 {
 		t.Error("Hash circular should yield some hash value")
+	}
+}
+
+type RefB struct {
+	Id string
+}
+
+type RefA struct {
+	Id string
+	B  RefB
+}
+
+func TestRef(t *testing.T) {
+	a := RefA{
+		Id: "test",
+		B:  RefB{Id: "anothertest"},
+	}
+	b := RefA{
+		Id: "test",
+		B:  RefB{Id: "anothertest"},
+	}
+
+	if !bytes.Equal(Hash(a), Hash(b)) {
+		t.Fatal("Expecting our two reference cases to hash the same even though different underlying objects, because same values")
+	}
+	if !bytes.Equal(Hash(a), Hash(a)) {
+		t.Fatal("Expecting our two reference cases to hash the same because they are the same")
 	}
 }
