@@ -236,4 +236,8 @@ func TestRef(t *testing.T) {
 	if !bytes.Equal(Hash(a), Hash(a)) {
 		t.Fatal("Expecting our two reference cases to hash the same because they are the same")
 	}
+
+	if bytes.Equal(Hash(true), Hash(false)) {
+		t.Fatal("Expecting our two reference cases to hash differently because they are different")
+	}
 }
