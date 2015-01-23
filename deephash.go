@@ -71,12 +71,19 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 		}
 	case reflect.String:
 		hash.Write([]byte(src.String()))
+	case reflect.Bool:
+		if src.Bool() == true {
+			hash.Write([]byte("1"))
+		} else {
+			hash.Write([]byte("0"))
+		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		binary.Write(hash, binary.BigEndian, src.Int())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		binary.Write(hash, binary.BigEndian, src.Uint())
 	case reflect.Float32, reflect.Float64:
 		binary.Write(hash, binary.BigEndian, src.Float())
+
 	}
 
 	return hash.Sum(nil)
