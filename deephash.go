@@ -38,7 +38,7 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 	hash := fnv.New64a()
 
 	// deal with pointers/interfaces
-	if src.Kind() == reflect.Ptr || src.Kind() == reflect.Interface {
+	for src.Kind() == reflect.Ptr || src.Kind() == reflect.Interface {
 		src = src.Elem()
 	}
 
