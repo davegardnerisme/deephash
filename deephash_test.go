@@ -3,22 +3,24 @@ package deephash
 import (
 	"bytes"
 	"fmt"
+	"reflect"
 	"testing"
 )
 
 type testStruct struct {
-	S   string
-	I   int
-	I8  int8
-	I16 int16
-	I32 int32
-	I64 int64
-	U8  uint8
-	U16 uint16
-	U32 uint32
-	U64 uint64
-	F32 float32
-	F64 float64
+	S         string
+	I         int
+	I8        int8
+	I16       int16
+	I32       int32
+	I64       int64
+	U8        uint8
+	U16       uint16
+	U32       uint32
+	U64       uint64
+	F32       float32
+	F64       float64
+	Interface interface{}
 }
 
 var differentTestCases = []interface{}{
@@ -106,6 +108,10 @@ var differentTestCases = []interface{}{
 		testStruct{S: "BAZ"},
 		testStruct{S: "FOO"},
 	},
+
+	// Interface types
+	&testStruct{Interface: testStruct{I: 42}},
+	&testStruct{Interface: &testStruct{I: 100}},
 }
 
 var sameCases = [][]interface{}{
@@ -151,6 +157,13 @@ var sameCases = [][]interface{}{
 			testStruct{S: "BAR"},
 			testStruct{S: "BAZ"},
 		},
+	},
+
+	// We should follow pointers of pointers and pointers within interfaces
+	[]interface{}{
+		&testStruct{Interface: testStruct{I: 42}},
+		&testStruct{Interface: &testStruct{I: 42}},
+		&testStruct{Interface: reflect.ValueOf(&testStruct{I: 42}).Interface()},
 	},
 }
 
