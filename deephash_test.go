@@ -259,3 +259,30 @@ func TestBooleans(t *testing.T) {
 		t.Fatal("Expecting true to hash differently than false")
 	}
 }
+
+type parent struct {
+	c1, c2 *child
+}
+
+type child struct {
+	val string
+}
+
+func TestStackCycle(t *testing.T) {
+	c1 := child{val: "child"}
+	c2 := child{val: "child"}
+
+	ch1 := Hash(&c1)
+	ch2 := Hash(&c2)
+	if !bytes.Equal(ch1, ch2) {
+		t.Fatalf("got %d != %d, want equal", ch1, ch2)
+	}
+
+	p1 := parent{c1: &c1, c2: &c1}
+	p2 := parent{c1: &c1, c2: &c2}
+	ph1 := Hash(p1)
+	ph2 := Hash(p2)
+	if !bytes.Equal(ph1, ph2) {
+		t.Errorf("got %d != %d, want equal", ph1, ph2)
+	}
+}
