@@ -33,6 +33,19 @@ func deepHash(src reflect.Value, visited map[uintptr]*visit, depth int) []byte {
 		}
 		// Remember, remember...
 		visited[h] = &visit{addr, typ, seen}
+		defer func() {
+			// If we get here, we've either added a new entry in visited or
+			// a new type to the end of a list in visited
+			if seen != nil {
+				// If we just added a type to the end, remove it when
+				// returning from this level of recursion
+				visited[h] = seen
+			} else {
+				// If this is the first time we've seen this memory address,
+				// pop it off when returning from this level of recursion
+				delete(visited, h)
+			}
+		}()
 	}
 
 	hash := fnv.New64a()
